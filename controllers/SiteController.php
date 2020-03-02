@@ -62,6 +62,10 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        if (Yii::$app->request->isAjax) {
+            return Request::find()->where(['status'=>1])->count();
+        }
+
         return $this->render('index', [
             'count'=>Request::find()->where(['status'=>1])->count(),
         ]);
