@@ -11,7 +11,7 @@ $(document).on('pjax:complete',()=> {
 
         let audio = new Audio('/sound/sound.mp3');
         audio.play();
-        console.log(count);
+        //console.log(count);
     }
 
 });
