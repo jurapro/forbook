@@ -22,18 +22,27 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
+            [
+                'attribute' => 'datetime',
+                'format' => ['date', 'php:Y-m-d']
+            ],
 
-            'id',
-            'id_category',
-            'id_user',
             'name',
             'description:ntext',
-            //'photo_to',
-            //'status',
-            //'datetime',
-            //'description_denied:ntext',
-            //'photo_after',
+            'category.name',
 
+            [
+                'label' => 'Статус заявки',
+                'attribute' => 'status',
+                'value'=>function ($data) {
+                    if ($data->status==0) return 'Новая';
+                    if ($data->status==1) return 'Завершена';
+                    if ($data->status==2) return 'Отменена';
+
+                },
+                'filter' => ['0' => 'Новая', '1' => 'Решена', '2' => 'Отклонена'],
+                'filterInputOptions' => ['prompt' => 'Все статусы', 'class' => 'form-control', 'id' => null]
+            ],
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

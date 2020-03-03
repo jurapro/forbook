@@ -3,17 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Request;
+use app\models\Category;
 use yii\data\ActiveDataProvider;
-use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * RequestController implements the CRUD actions for Request model.
+ * CategoryController implements the CRUD actions for Category model.
  */
-class RequestController extends Controller
+class CategoryController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -21,17 +20,6 @@ class RequestController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['*'],
-                'rules' => [
-                    [
-                        'actions' => ['index', 'create'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -42,14 +30,13 @@ class RequestController extends Controller
     }
 
     /**
-     * Lists all Request models.
+     * Lists all Category models.
      * @return mixed
      */
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Request::find()->where(['id_user' => Yii::$app->user->identity->getId()])
-                ->orderBy('datetime DESC'),
+            'query' => Category::find(),
         ]);
 
         return $this->render('index', [
@@ -58,7 +45,7 @@ class RequestController extends Controller
     }
 
     /**
-     * Displays a single Request model.
+     * Displays a single Category model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -71,13 +58,13 @@ class RequestController extends Controller
     }
 
     /**
-     * Creates a new Request model.
+     * Creates a new Category model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Request();
+        $model = new Category();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -89,7 +76,7 @@ class RequestController extends Controller
     }
 
     /**
-     * Updates an existing Request model.
+     * Updates an existing Category model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -109,7 +96,7 @@ class RequestController extends Controller
     }
 
     /**
-     * Deletes an existing Request model.
+     * Deletes an existing Category model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -123,15 +110,15 @@ class RequestController extends Controller
     }
 
     /**
-     * Finds the Request model based on its primary key value.
+     * Finds the Category model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Request the loaded model
+     * @return Category the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Request::findOne($id)) !== null) {
+        if (($model = Category::findOne($id)) !== null) {
             return $model;
         }
 
