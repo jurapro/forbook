@@ -30,14 +30,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'description:ntext',
             'category.name',
-
             [
                 'label' => 'Статус заявки',
                 'attribute' => 'status',
-                'value'=>function ($data) {
-                    if ($data->status==0) return 'Новая';
-                    if ($data->status==1) return 'Завершена';
-                    if ($data->status==2) return 'Отменена';
+                'value' => function ($data) {
+                    if ($data->status == 0) return 'Новая';
+                    if ($data->status == 1) return 'Завершена';
+                    if ($data->status == 2) return 'Отменена';
 
                 },
                 'filter' => ['0' => 'Новая', '1' => 'Решена', '2' => 'Отклонена'],
