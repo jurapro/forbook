@@ -26,7 +26,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'datetime',
                 'format' => ['date', 'php:Y-m-d']
             ],
-
+            [
+                'label' => 'Фото заявки',
+                'attribute' => 'photo_to',
+                'format' => 'html',
+                'value' => function ($data) {
+                    return "<img src='$data->photo_to' style='width: 100px'>";
+                },
+            ],
             'name',
             'description:ntext',
             'category.name',

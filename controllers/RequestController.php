@@ -9,6 +9,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * RequestController implements the CRUD actions for Request model.
@@ -79,8 +80,12 @@ class RequestController extends Controller
     {
         $model = new Request();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) ) {
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            if ($model->validate() && $model->upload()) {
+                $model->save(false);
+            }
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [
