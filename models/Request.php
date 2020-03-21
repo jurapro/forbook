@@ -24,6 +24,7 @@ use Yii;
 class Request extends \yii\db\ActiveRecord
 {
     public $imageFile;
+
     /**
      * {@inheritdoc}
      */
@@ -38,7 +39,9 @@ class Request extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_category','name','description'], 'required'],
+            [['description_denied'], 'required', 'on' => 'cancel'],
+
+            [['id_category', 'name', 'description'], 'required'],
             [['id_category', 'id_user', 'status'], 'integer'],
             [['id_user'], 'default', 'value' => Yii::$app->user->identity->getId()],
             [['description', 'description_denied'], 'string'],
@@ -47,8 +50,16 @@ class Request extends \yii\db\ActiveRecord
             [['id_category'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['id_category' => 'id']],
             [['id_user'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['id_user' => 'id']],
             [['imageFile'], 'file', 'skipOnEmpty' => false,
-                'extensions' => ['png', 'jpg', 'jpeg','bmp'], 'maxSize' => 10*1024*1024],
+                'extensions' => ['png', 'jpg', 'jpeg', 'bmp'], 'maxSize' => 10 * 1024 * 1024],
         ];
+    }
+
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios['cancel'] = ['description_denied', 'status'];
+        $scenarios['success'] = ['imageFile', 'status'];
+        return $scenarios;
     }
 
     /**
@@ -90,12 +101,39 @@ class Request extends \yii\db\ActiveRecord
     public function upload()
     {
         if ($this->validate()) {
-            $file_name='uploads/' . $this->imageFile->baseName . '.' . $this->imageFile->extension;
+            $file_name = 'uploads/' . $this->imageFile->baseName . '.' . $this->imageFile->extension;
             $this->imageFile->saveAs($file_name);
-            $this->photo_to='/'.$file_name;
+            $this->photo_to = '/' . $file_name;
             return true;
         } else {
             return false;
         }
+    }
+
+    public function cancel($description)
+    {
+        $this->status = 2;
+        $this->description_denied = $description;
+
+        if ($this->save()) {
+            return true;
+        }
+        return false;
+
+    }
+
+    public function success()
+    {
+        $this->status = 1;
+
+        if ($this->validate()) {
+            $file_name = 'uploads/' . $this->imageFile->baseName . '.' . $this->imageFile->extension;
+            $this->imageFile->saveAs($file_name);
+            $this->photo_after = '/' . $file_name;
+            if ($this->save(false)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

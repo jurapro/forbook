@@ -18,16 +18,18 @@ use yii\helpers\Html; ?>
             [
                 'label' => 'Статус заявки',
                 'attribute' => 'status',
+                 'format' => 'html',
                 'value' => function ($data) {
-                    if ($data->status == 0) return 'Новая';
+                    if ($data->status == 0) {
+                        return 'Новая '.Html::a('Отменить',"/request/cancel?id=$data->id")
+                            .' '.Html::a('Решить',"/request/success?id=$data->id");
+                    };
                     if ($data->status == 1) return 'Завершена';
                     if ($data->status == 2) return 'Отменена';
-
                 },
                 'filter' => ['0' => 'Новая', '1' => 'Решена', '2' => 'Отклонена'],
                 'filterInputOptions' => ['prompt' => 'Все статусы', 'class' => 'form-control', 'id' => null]
             ],
-            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 </p>
