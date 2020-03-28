@@ -16,7 +16,7 @@ use yii\web\UploadedFile;
  */
 class RequestController extends Controller
 {
-    /**
+    /**eh
      * {@inheritdoc}
      */
     public function behaviors()
@@ -159,10 +159,8 @@ class RequestController extends Controller
 
         $model->scenario = 'cancel';
 
-        if (Yii::$app->request->post()) {
-            if ($model->cancel(Yii::$app->request->post()['Request']['description_denied'])) {
-                return $this->redirect(['admin/index']);
-            }
+        if ($model->load(Yii::$app->request->post()) && $model->cancel()) {
+            return $this->redirect(['admin/index']);
         }
 
         return $this->render('cancel', [

@@ -110,10 +110,9 @@ class Request extends \yii\db\ActiveRecord
         }
     }
 
-    public function cancel($description)
+    public function cancel()
     {
         $this->status = 2;
-        $this->description_denied = $description;
 
         if ($this->save()) {
             return true;
