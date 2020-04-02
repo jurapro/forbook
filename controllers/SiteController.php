@@ -66,7 +66,13 @@ class SiteController extends Controller
             return Request::find()->where(['status'=>1])->count();
         }
 
+        $requests = Request::find()->where(['status'=>1])
+            ->addOrderBy('datetime desc')
+            ->limit(4,0)
+            ->all();
+
         return $this->render('index', [
+            'requests' => $requests,
             'count'=>Request::find()->where(['status'=>1])->count(),
         ]);
     }
