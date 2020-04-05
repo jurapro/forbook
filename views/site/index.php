@@ -2,41 +2,38 @@
 
 /* @var $this yii\web\View */
 
-$this->title = 'My Yii Application';
+$this->title = 'Главная страница';
 
-use yii\helpers\Html;
-use yii\widgets\DetailView; ?>
-
-    <div id="requests">
-        <h1>Количество решенных заявок <span><?= $count; ?></span></h1>
-    </div>
-
-<?php
 $this->registerJsFile(
     '@web/js/index.js',
     ['depends' => [\yii\web\JqueryAsset::className()]]
 );
-
 $this->registerCssFile("@web/css/main.css", [
     'depends' => [\yii\bootstrap\BootstrapAsset::className()],
 ]);
+?>
+<div id="requests">
+    <h1>Количество решенных заявок <span><?= $count; ?></span></h1>
+</div>
+<div class="row">
+    <?php
+    foreach ($requests as $model) {
+        ?>
 
-foreach ($requests as $model) {
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+                <img src="<?= $model->photo_after; ?>" alt="<?= $model->name; ?>"
+                     data-img-to="<?= $model->photo_to; ?>"
+                     data-img-after="<?= $model->photo_after; ?>">
+                <div class="caption">
+                    <h3><?= $model->name; ?></h3>
+                    <p><?= $model->datetime; ?></p>
+                    <p><?= $model->category->name; ?></p>
+                </div>
+            </div>
+        </div>
 
-    echo DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'datetime',
-            'name',
-            'category.name',
-            [
-                'label' => 'Изображение',
-                'format' => 'html',
-                'value' =>"<div class='request' style='background-image: url($model->photo_to)'>
-                <div class='img_request' style='background-image: url($model->photo_after)'></div>
-                </div>",
-
-            ],
-        ],
-    ]);
-}
+        <?php
+    }
+    ?>
+</div>
