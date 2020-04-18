@@ -13,8 +13,10 @@ $this->registerCssFile("@web/css/main.css", [
 ]);
 ?>
 <div id="requests">
-    <h1>Количество решенных заявок <span><?= $count; ?></span></h1>
+    <h1 class="cover-heading">Количество решенных заявок <span><?= $count; ?></span></h1>
 </div>
+
+
 <div class="row">
     <?php
     foreach ($requests as $model) {
