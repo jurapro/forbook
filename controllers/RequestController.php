@@ -58,13 +58,12 @@ class RequestController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Request::find()->where(['id_user' => Yii::$app->user->identity->getId()])
-                ->orderBy('datetime DESC'),
-        ]);
+        $requests = Request::find()->where(['id_user' => Yii::$app->user->identity->getId()])
+            ->orderBy('datetime DESC')
+            ->all();
 
         return $this->render('index', [
-            'dataProvider' => $dataProvider,
+            'requests' => $requests,
         ]);
     }
 
