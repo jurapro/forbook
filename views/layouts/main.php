@@ -28,66 +28,41 @@ AppAsset::register($this);
 <body>
 <?php $this->beginBody() ?>
 
-<div class="site-wrapper">
-
-    <div class="site-wrapper-inner">
-
-        <div class="cover-container">
-
-            <div class="masthead clearfix">
-                <div class="inner">
-
-                    <nav>
-                        <?php
-                        NavBar::begin([
-                            'brandLabel' => Yii::$app->name,
-                            'brandUrl' => Yii::$app->homeUrl,
-                            'options' => [
-                                'class' => 'nav masthead-nav',
-                            ],
-                        ]);
-                        echo Nav::widget([
-                            'options' => ['class' => 'nav masthead-nav'],
-                            'items' => [
-                                ['label' => 'Главная', 'url' => ['/site/index']],
-                                ['label' => 'Регистрация', 'url' => ['/user/create'], 'visible' => Yii::$app->user->isGuest],
-                                ['label' => 'Личный кабинет', 'url' => ['/request/index'], 'visible' => !Yii::$app->user->isGuest],
-                                ['label' => 'Панель администрирования сайта', 'url' => ['/admin/index'],
-                                    'visible' => !Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin()],
-                                Yii::$app->user->isGuest ? (
-                                ['label' => 'Вход', 'url' => ['/site/login']]
-                                ) : (
-                                    '<li>'
-                                    . Html::beginForm(['/site/logout'], 'post')
-                                    . Html::submitButton(
-                                        'Выход (' . Yii::$app->user->identity->username . ')',
-                                        ['class' => 'btn btn-link logout']
-                                    )
-                                    . Html::endForm()
-                                    . '</li>'
-                                )
-                            ],
-                        ]);
-                        NavBar::end();
-                        ?>
-
-                    </nav>
-                </div>
-            </div>
-
-            <div class="inner cover">
-                <p class="lead">
-                    <?= Alert::widget() ?>
-                    <?= $content ?>
-                </p>
-            </div>
-
-
-        </div>
-
+<div class="container">
+    <div class="header clearfix">
+            <?php
+            echo Nav::widget([
+                'options' => ['class' => 'nav nav-pills pull-right'],
+                'items' => [
+                    ['label' => 'Главная', 'url' => ['/site/index']],
+                    ['label' => 'Регистрация', 'url' => ['/user/create'], 'visible' => Yii::$app->user->isGuest],
+                    ['label' => 'Личный кабинет', 'url' => ['/request/index'], 'visible' => !Yii::$app->user->isGuest],
+                    ['label' => 'Панель администрирования сайта', 'url' => ['/admin/index'],
+                        'visible' => !Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin()],
+                    Yii::$app->user->isGuest ? (
+                    ['label' => 'Вход', 'url' => ['/site/login']]
+                    ) : (
+                        '<li>'
+                        . Html::beginForm(['/site/logout'], 'post')
+                        . Html::submitButton(
+                            'Выход (' . Yii::$app->user->identity->username . ')',
+                            ['class' => 'btn btn-link logout']
+                        )
+                        . Html::endForm()
+                        . '</li>'
+                    )
+                ],
+            ]);
+            ?>
+        <h3 class="text-muted">Сайт сознательных граждан</h3>
     </div>
 
-</div>
+    <div class="row marketing">
+        <?= Alert::widget() ?>
+        <?= $content ?>
+    </div>
+
+</div> <!-- /container -->
 
 <?php $this->endBody() ?>
 </body>
