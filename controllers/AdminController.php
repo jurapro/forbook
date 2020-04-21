@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Request;
+use app\models\User;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
@@ -17,7 +18,7 @@ class AdminController extends \yii\web\Controller
                 'only' => ['*'],
                 'rules' => [
                     [
-                        'actions' => ['index'],
+                        'actions' => ['index', 'users'],
                         'roles' => ['@'],
                         'allow' => true,
                         'matchCallback' => function ($rule, $action) {
@@ -39,6 +40,28 @@ class AdminController extends \yii\web\Controller
             'dataProvider' => $dataProvider,
         ]);
 
+    }
+
+    public function actionUsers($id_user = 0)
+    {
+        $model = new Request();
+
+        $users = User::find()
+            ->select(['full_name'])
+            ->indexBy('id')
+            ->column();
+
+        $requests = Request::find()
+            ->select(['name'])
+            ->where(['id_user' => $id_user])
+            ->indexBy('id')
+            ->column();
+
+        return $this->render('users', [
+            'requests' => $requests,
+            'users' => $users,
+            'model' => $model,
+        ]);
     }
 
 }
