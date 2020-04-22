@@ -56,13 +56,25 @@ class RequestController extends Controller
      * Lists all Request models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($status = -1)
     {
-        $requests = Request::find()->where(['id_user' => Yii::$app->user->identity->getId()])
-            ->orderBy('datetime DESC')
-            ->all();
+        if ($status==-1) {
+            $requests = Request::find()->where(
+                ['id_user' => Yii::$app->user->identity->getId(),
+                ])
+                ->orderBy('datetime DESC')
+                ->all();
+        } else {
+            $requests = Request::find()->where(
+                ['id_user' => Yii::$app->user->identity->getId(),
+                    'status' => $status
+                ])
+                ->orderBy('datetime DESC')
+                ->all();
+        }
 
         return $this->render('index', [
+            'request' => new Request(),
             'requests' => $requests,
         ]);
     }
